@@ -1,0 +1,1 @@
+This project is a simple landing page designed for a company called "MIWovie". The focus is on modern design with animations and a clean, minimalist navigation bar. The page uses custom fonts, a sleek logo animation, and hover effects for the navigation menu.
