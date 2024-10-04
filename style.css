@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    background: rgb(0, 31, 19);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+}
+
+.logo {
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+/* Применяем шрифт Patua One для заглавной буквы W */
+.main-letter {
+    font-family: 'Patua One', sans-serif;
+    font-size: 2em;
+    color: #fff;
+    user-select: none;
+}
+
+/* Анимация для притягивания ovie */
+@keyframes moveLetters {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Анимация для уезжания MI за экран */
+@keyframes moveOffScreen {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-150%);
+    opacity: 0; /* Полностью пропадает за экраном */
+  }
+}
+
+.logo .mi {
+  animation: moveOffScreen 0.9s ease-in forwards; /* MI уезжает за экран */
+}
+
+.logo .second-half {
+  animation: moveLetters 0.7s 0.7s ease-in-out forwards; /* ovie появляется с задержкой */
+  opacity: 0;
+}
+
+.navigation a {
+    position: relative;
+    font-size: 1.1em;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 50px;
+    transition: color .5s;
+}
+
+.navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: #fff;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .5s ease;
+}
+
+.navigation a:hover::after {
+    transform-origin: right;
+    transform: scaleX(1); 
+}
+
+.navigation a:hover {
+    color: #fff;
+}
+
+.navigation .btnLogin-popup {
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 50px;
+    transition: .5s;
+}
+
+.navigation .btnLogin-popup:hover {
+    background: #fff;
+    color: #162938;
+}
