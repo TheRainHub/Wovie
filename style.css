@@ -8,13 +8,56 @@
     font-family: 'Poppins', sans-serif;
 }
 
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('photos/rocky3.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-attachment: fixed;
+    animation: slideInBackground 2s ease-in-out forwards;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 1); 
+    animation: fadeOutDarkness 2s ease-in-out forwards; 
+    z-index: 1;
+}
+
+@keyframes slideInBackground {
+    0% {
+        background-position: center top;
+    }
+    100% {
+        background-position: center center;
+    }
+}
+
+@keyframes fadeOutDarkness {
+    0% {
+        background: rgba(0, 0, 0, 1);
+    }
+    100% {
+        background: rgba(0, 0, 0, 0); 
+    }
+}
+
+
+
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     padding: 20px 100px;
-    background: rgb(0, 31, 19);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,15 +71,15 @@ header {
     align-items: center;
 }
 
-/* Применяем шрифт Patua One для заглавной буквы W */
+
 .main-letter {
     font-family: 'Patua One', sans-serif;
-    font-size: 2em;
+    font-size: 1.4em;
     color: #fff;
     user-select: none;
 }
 
-/* Анимация для притягивания ovie */
+
 @keyframes moveLetters {
   0% {
     transform: translateX(100px);
@@ -48,7 +91,7 @@ header {
   }
 }
 
-/* Анимация для уезжания MI за экран */
+
 @keyframes moveOffScreen {
   0% {
     transform: translateX(0);
@@ -56,16 +99,16 @@ header {
   }
   100% {
     transform: translateX(-150%);
-    opacity: 0; /* Полностью пропадает за экраном */
+    opacity: 0; 
   }
 }
 
 .logo .mi {
-  animation: moveOffScreen 0.9s ease-in forwards; /* MI уезжает за экран */
+  animation: moveOffScreen 0.9s ease-in forwards;
 }
 
 .logo .second-half {
-  animation: moveLetters 0.7s 0.7s ease-in-out forwards; /* ovie появляется с задержкой */
+  animation: moveLetters 0.7s 0.7s ease-in-out forwards; 
   opacity: 0;
 }
 
