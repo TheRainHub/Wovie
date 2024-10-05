@@ -233,3 +233,56 @@ header {
     font-size: 1.2em;
     color: rgba(54, 56, 77, 1);
 }
+
+.remember-forgot {
+    font-size: .9em;
+    color: #162938;
+    font-weight: 500;
+    margin: -15px 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.remember-forgot label input {
+    accent-color: #162038;
+    margin-right: 3px;
+}
+
+.remember-forgot a {
+    color: #162038;
+    text-decoration: none;
+}
+
+.remember-forgot a::hover {
+    text-decoration: underline;
+}
+
+.loginbutton {
+    width: 100%;
+    height: 45px;
+    background: #e0cdc0;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #162038;
+    font-weight: 503;
+}
+
+.login-register {
+    font-size: .9em;
+    color: #162038;
+    text-align: center;
+    font-weight: 500;
+    margin: 25px 0 10px;
+}
+
+.login-register p a {
+    color: #162038;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-register p a::hover {
+    text-decoration: underline;
+}
