@@ -13,11 +13,11 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('photos/rocky3.jpg');
+    background-image: url('photos/starwarsbackG.jpg');
     background-size: cover;
     background-position: center bottom;
     background-attachment: fixed;
-    animation: slideInBackground 2s ease-in-out forwards;
+    animation: slideInBackground 3s ease-in-out forwards;
 }
 
 body::before {
@@ -50,8 +50,6 @@ body::before {
     }
 }
 
-
-
 header {
     position: fixed;
     top: 0;
@@ -71,14 +69,12 @@ header {
     align-items: center;
 }
 
-
 .main-letter {
     font-family: 'Patua One', sans-serif;
     font-size: 1.4em;
     color: #fff;
     user-select: none;
 }
-
 
 @keyframes moveLetters {
   0% {
@@ -90,7 +86,6 @@ header {
     opacity: 1;
   }
 }
-
 
 @keyframes moveOffScreen {
   0% {
@@ -163,4 +158,78 @@ header {
 .navigation .btnLogin-popup:hover {
     background: #fff;
     color: #162938;
+}
+
+.wrapper {
+    position: relative;
+    width: 440px;
+    height: 400px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+.wrapper .form-box {
+    width: 100%;
+    padding: 40px;
+}
+
+.form-box h2 {
+    font-size: 2.2em;
+    color: #e0cdc0;
+    text-align: center;
+    font-family: 'Patua One', sans-serif;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #162938;
+    margin: 30px 0;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #e0cdc0;
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label,
+.input-box label.active {
+    top: -6px; 
+    font-size: 0.8em; 
+    color: #e0cdc0;
+}
+
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e0cdc0;
+    font-size: 1em;
+    padding: 0 5px;
+    line-height: 1.2em;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: rgba(54, 56, 77, 1);
 }
