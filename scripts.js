@@ -1,3 +1,16 @@
+const preloader = document.getElementById('preloader');
+
+const lastWord = document.querySelector('.word:last-child');
+
+lastWord.addEventListener('animationend', function() {
+    preloader.classList.add('hide-preloader');
+});
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.body.classList.add('loaded');
+// });
+
+
 const wrapper = document.querySelector('.wrapper');
 const loginLink = document.querySelector('.login-link');
 const registerLink = document.querySelector('.register-link');

@@ -20,6 +20,80 @@ body {
     animation: slideInBackground 3s ease-in-out forwards;
 }
 
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.logo-animation {
+    font-size: 3em;
+    color: #e0cdc0;
+    font-family: 'Patua One', sans-serif;
+    opacity: 0;
+    animation: fadeInLogo 1s forwards;
+}
+
+.tagline {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.word {
+    font-size: 1.5em;
+    color: #e0cdc0;
+    opacity: 0;
+    margin: 0 5px;
+}
+
+.word:nth-child(1) {
+    animation: fadeInWord 1s forwards 1s;
+}
+
+.word:nth-child(2) {
+    animation: fadeInWord 1s forwards 2s;
+}
+
+.word:nth-child(3) {
+    animation: fadeInWord 1s forwards 3s;
+}
+
+@keyframes fadeInLogo {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInWord {
+    to {
+        opacity: 1;
+    }
+}
+
+#preloader.hide-preloader {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#preloader {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
 body::before {
     content: "";
     position: absolute;
@@ -337,4 +411,25 @@ header {
 
 .login-register p a::hover {
     text-decoration: underline;
+}
+
+.movies-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.movie {
+    width: 200px;
+    text-align: center;
+}
+
+.movie img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.movie h3 {
+    margin-top: 10px;
+    font-size: 1.1em;
 }
