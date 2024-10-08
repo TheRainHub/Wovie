@@ -1,41 +1,32 @@
 <?php
-require_once 'db_connect.php';
+session_start();
+require 'db_connection.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    echo "Данные получены<br>"; 
+
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
+    // Проверка на пустые поля
     if (empty($username) || empty($email) || empty($password)) {
-        echo "All fields should be filled in";
+        echo "Пожалуйста, заполните все поля!";
         exit();
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email.Please try fill in it again.";
-        exit();
-    }
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-    $stmt->execute([$username, $email]);
-    if ($stmt->fetch()) {
-        echo "User with the same name or email are already existe.";
-        exit();
-    }
+    try {
+        $stmt = $conn->prepare('INSERT INTO users (username, email, password) VALUES (?, ?, ?)');
+        $stmt->execute([$username, $email, $hashedPassword]);
 
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
-
-    $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
-    if ($stmt->execute([$username, $email, $password_hash])) {
-        session_start();
         $_SESSION['user_id'] = $conn->lastInsertId();
         $_SESSION['username'] = $username;
 
-        header("Location: index.php");
-        exit();
-    } else {
-        echo "Ошибка при регистрации.";
+        echo "Регистрация прошла успешно!";
+    } catch (PDOException $e) {
+        echo "Ошибка при добавлении пользователя: " . $e->getMessage();
     }
 }
-
 ?>

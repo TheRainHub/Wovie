@@ -23,7 +23,6 @@ require_once 'db_connect.php';
         <h2>Last film</h2>
         <div class="movies-container">
             <?php
-            // Получение списка фильмов из базы данных
             $stmt = $conn->query("SELECT id, title, poster_path FROM movies ORDER BY release_date DESC LIMIT 10");
             while ($movie = $stmt->fetch()):
             ?>
