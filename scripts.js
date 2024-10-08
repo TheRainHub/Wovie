@@ -1,10 +1,25 @@
 const preloader = document.getElementById('preloader');
-
 const lastWord = document.querySelector('.word:last-child');
 
-lastWord.addEventListener('animationend', function() {
+lastWord.addEventListener('animationend', hidePreloader);
+
+
+function hidePreloader() {
     preloader.classList.add('hide-preloader');
-});
+
+    
+    window.removeEventListener('keydown', skipPreloader);
+    window.removeEventListener('mousedown', skipPreloader);
+    lastWord.removeEventListener('animationend', hidePreloader);
+}
+
+
+function skipPreloader() {
+    hidePreloader();
+}
+
+window.addEventListener('keydown', skipPreloader);
+window.addEventListener('mousedown', skipPreloader);
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     document.body.classList.add('loaded');

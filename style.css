@@ -294,7 +294,7 @@ header {
     right: 0;
     width: 45px;
     height: 45px;
-    background: #162038;
+    background: #162931;
     font-size: 2em;
     color: #fff;
     display: flex;
@@ -357,12 +357,12 @@ header {
     position: absolute;
     right: 8px;
     font-size: 1.2em;
-    color: rgba(54, 56, 77, 1);
+    color: #162038;
 }
 
 .remember-forgot {
     font-size: .9em;
-    color: #162938;
+    color: #162038;
     font-weight: 500;
     margin: -15px 0 15px;
     display: flex;
