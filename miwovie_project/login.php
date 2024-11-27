@@ -3,7 +3,7 @@
 
 $pageTitle = 'Login';
 include 'temples/header.php';
-include 'includes/db_connection.php';
+include 'data/db_connection.php';
 
 // Initialize variables
 $email = '';
