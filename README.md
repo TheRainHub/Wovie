@@ -20,6 +20,7 @@ This project showcases:
 3. A commitment to simplicity and performance.  
 
 ## 🎨 Screenshots  
+![image](https://github.com/user-attachments/assets/a5f3a296-f8b4-4977-9a1b-41e2f4494eb3)
 
 
 
