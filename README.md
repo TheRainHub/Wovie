@@ -21,7 +21,7 @@ This project showcases:
 
 ## 🎨 Screenshots  
 
-*(Include here screenshots or a GIF showcasing your project.)*
+
 
 ## 🛠️ Tech Stack  
 
