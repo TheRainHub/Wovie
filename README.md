@@ -21,7 +21,7 @@ This project showcases:
 
 ## 🎨 Screenshots  
 ![image](https://github.com/user-attachments/assets/2034ca5a-0c03-476a-a1b3-653612998fdc)
-![image](https://github.com/user-attachments/assets/13bcf070-a8b5-41b7-9125-59734cf83781)
+
 
 
 
