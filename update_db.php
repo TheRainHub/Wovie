@@ -2,7 +2,7 @@
 require 'data/db_connection.php';
 
 // Configuration
-$api_key = '394d146307bda71fae837829dde725e9';
+$api_key = '';
 $image_base_url = 'https://image.tmdb.org/t/p/';
 $backdrop_size = 'original';
 $local_backdrop_dir = 'images/backdrops/';
