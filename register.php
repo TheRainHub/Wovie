@@ -2,8 +2,7 @@
 // register.php
 
 $pageTitle = 'Register';
-include 'temples/header.php';
-include 'includes/db_connection.php';
+require 'data/db_connection.php';
 
 
 // Initialize variables
@@ -55,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'password' => $hashedPassword
         ]);
         // Registration successful, redirect to login
-        header('Location: login.php');
+        // header('Location: index.php');
         exit();
     }
 }

@@ -209,13 +209,13 @@ header {
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     width: 400px;
-    height: 440px;
+    height: 480px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     backdrop-filter: blur(20px);
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 2;
@@ -224,11 +224,12 @@ header {
 }
 
 .wrapper.active-popup {
+    display: flex;
     transform: translate(-50%, -50%) scale(1);
 }
 
 .wrapper.active {
-    height: 520px;
+    height: 720px;
 }
 
 .wrapper .form-box {
@@ -322,6 +323,85 @@ header {
     line-height: 1.2em;
 }
 
+.input-box input.invalid {
+    border-color: #ff3e3e;
+}
+
+.error-message {
+    color: #2c0909;
+    font-size: 0.8rem;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+    min-height: 1.2rem;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: white;
+    font-size: 14px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification.success {
+    background-color: #4CAF50;
+}
+
+.notification.error {
+    background-color: #ff00005d;
+}
+
+/* Стили для состояния загрузки кнопки */
+.loginbutton.loading {
+    position: relative;
+    color: transparent;
+}
+
+.loginbutton.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: button-loading 0.8s linear infinite;
+}
+
+@keyframes button-loading {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: #ff3e3e;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 15px;
+    transition: all 0.3s ease;
+}
+
+.input-box input.error {
+    border-color: #ff3e3e;
+}
+
 .input-box .icon {
     position: absolute;
     right: 8px;
@@ -394,6 +474,17 @@ header {
     text-decoration: underline;
 }
 
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+input.invalid {
+    border-color: red;
+}
+
+
 footer {
     background-color: transparent;
     margin-top: 100%;
@@ -404,4 +495,3 @@ footer {
     bottom: auto;
     width: 100%;
 }
-

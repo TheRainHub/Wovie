@@ -1,0 +1,325 @@
+:root {
+    --background-color: #000;
+    --overlay-color: rgba(0, 0, 0, 0.8);
+    --primary-color: #ffcc00;
+    --text-color: #fff;
+    --secondary-color: #8b949e;
+    --error-color: #ff3366;
+    --card-bg-color: #1a1c20;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --font-family: 'Arial', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background: url('../photos/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-color);
+    position: relative;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-color);
+    z-index: -1; 
+}
+
+.container {
+    overflow: hidden;
+}
+
+.logo {
+    font-size: 2em;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+.navigation {
+    position: fixed;
+    top: -70px;
+    left: 0;
+    width: 100%;
+    margin: 5px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: var(--text-color);
+    padding: 20px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    text-align: center;
+    transition: top 0.3s ease;
+    z-index: 1000;
+}
+
+.navigation:hover {
+    top: 0;
+}
+
+/* Movie Gallery Styles */
+.movie-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 40px; 
+    padding: 50px;
+    max-width: 1270px; 
+    margin: 100px auto; /* Center the gallery */
+}
+
+.movie-card {
+    background-color: var(--card-bg-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.movie-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.movie-poster-container {
+    position: relative;
+    width: 100%;
+    padding-top: 150%;
+    overflow: hidden;
+}
+
+.movie-poster-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.genre-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    font-size: 0.8em;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+}
+
+.genre {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.genre-action {
+    background-color: #1e90ff;  
+    color: #fff;
+}
+
+.genre-adventure {
+    background-color: #ffa500;  
+    color: #fff;
+}
+
+.genre-animation {
+    background-color: #32cd32;  
+    color: #fff;
+}
+
+.genre-comedy {
+    background-color: #ffdb58;  
+    color: #000;
+}
+
+.genre-crime {
+    background-color: #483d8b;  
+    color: #fff;
+}
+
+.genre-documentary {
+    background-color: #4682b4;  
+    color: #fff;
+}
+
+.genre-drama {
+    background-color: #ff69b4;  
+    color: #fff;
+}
+
+.genre-family {
+    background-color: #98fb98;  
+    color: #000;
+}
+
+.genre-fantasy {
+    background-color: #9370db;  
+    color: #fff;
+}
+
+.genre-history {
+    background-color: #8b4513; 
+    color: #fff;
+}
+
+.genre-horror {
+    background-color: #dc143c; 
+    color: #fff;
+}
+
+.genre-music {
+    background-color: #ff6347; 
+    color: #fff;
+}
+
+.genre-mystery {
+    background-color: #4b0082; 
+    color: #fff;
+}
+
+.genre-romance {
+    background-color: #ff1493;  
+    color: #fff;
+}
+
+.genre-sci-fi {
+    background-color: #8a2be2;  
+    color: #fff;
+}
+
+.genre-tv-movie {
+    background-color: #696969;  
+    color: #fff;
+}
+
+.genre-thriller {
+    background-color: #800000;  
+    color: #fff;
+}
+
+.genre-war {
+    background-color: #556b2f;  
+    color: #fff;
+}
+
+.genre-western {
+    background-color: #cd853f;  
+    color: #fff;
+}
+
+.genre-default {
+    background-color: #ccc;  
+    color: #000;
+}
+
+.movie-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.movie-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.movie-year {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.rating .stars {
+    color: var(--primary-color);
+    font-size: 1.2em;
+}
+
+.rating .rating-number {
+    font-size: 1rem;
+    color: var(--secondary-color);
+}
+
+/* Pagination Styles */
+.pagination-container {
+    position: fixed;
+    bottom: 20px; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.pagination-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #282c34; 
+    border: 1px solid #3b3f47; 
+    border-radius: 5px; 
+    text-decoration: none;
+    transition: all 0.3s ease; 
+}
+
+.pagination-btn:hover {
+    background-color: #3b3f47; 
+    border-color: #61dafb; 
+    color: #61dafb; 
+}
+
+.pagination-btn.active {
+    background-color: #61dafb; 
+    border-color: #282c34; 
+    color: #282c34; 
+    cursor: default; 
+}
+
+.loading, .error {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+.error {
+    color: var(--error-color);
+}

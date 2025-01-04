@@ -3,7 +3,7 @@
 
 $pageTitle = 'Login';
 include 'temples/header.php';
-include 'includes/db_connection.php';
+require 'data/db_connection.php';
 
 // Initialize variables
 $email = '';
@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($password)) {
         $error = 'Please fill in all fields.';
     } else {
-        // Prepare SQL statement to prevent SQL injection
         $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();

@@ -1,97 +1,26 @@
 <?php
 session_start();
 
-$pageTitle = 'MIWovie - Home';
+// Initialize all variables
+$pageTitle = 'Wovie';
 $backgroundImage = 'photos/starwarsbackG.jpg';
-include 'temples/header.php';
-include 'includes/db_connection.php';
-
-// Initialize variables for registration
+$errors = [];
 $username = '';
 $email = '';
 $password = '';
 $confirm_password = '';
-$errors = [];
-
-// Initialize variables for login
 $login_email = '';
 $login_password = '';
 $login_error = '';
 
-// Handle registration
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-    // Retrieve form data
-    $username = $_POST['username'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
+// Include required files
+include 'temples/header.php';
+require 'data/db_connection.php';
 
-    // Validate input
-    if (empty($username)) {
-        $errors['username'] = 'Please enter a username.';
-    }
-    if (empty($email)) {
-        $errors['email'] = 'Please enter an email.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = 'Please enter a valid email.';
-    }
-    if (empty($password)) {
-        $errors['password'] = 'Please enter a password.';
-    }
-    if ($password !== $confirm_password) {
-        $errors['confirm_password'] = 'Passwords do not match.';
-    }
-
-    // Check if email already exists
-    if (empty($errors)) {
-        $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email');
-        $stmt->execute(['email' => $email]);
-        if ($stmt->fetch()) {
-            $errors['email'] = 'Email is already registered.';
-        }
-    }
-
-    // If no errors, insert new user into the database
-    if (empty($errors)) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
-        $stmt->execute([
-            'username' => $username,
-            'email'    => $email,
-            'password' => $hashedPassword
-        ]);
-        // Registration successful, redirect to login
-        header('Location: index.php');
-        exit();
-    }
-}
-
-// Handle login
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    // Retrieve form data
-    $login_email = $_POST['login_email'] ?? '';
-    $login_password = $_POST['login_password'] ?? '';
-
-    // Validate input
-    if (empty($login_email) || empty($login_password)) {
-        $login_error = 'Please fill in all fields.';
-    } else {
-        // Prepare SQL statement to prevent SQL injection
-        $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
-        $stmt->execute(['email' => $login_email]);
-        $user = $stmt->fetch();
-
-        // Verify user exists and password is correct
-        if ($user && password_verify($login_password, $user['password'])) {
-            // Authentication successful
-            $_SESSION['user_id'] = $user['id'];
-            header('Location: profile.php');
-            exit();
-        } else {
-            // Authentication failed
-            $login_error = 'Invalid email or password.';
-        }
-    }
+// Check if user is already logged in
+if (isset($_SESSION['user_id'])) {
+    header('Location: home.php');
+    exit();
 }
 ?>
 
@@ -109,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <link href="https://fonts.googleapis.com/css2?family=Patua+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-content">
             <h1 class="logo-animation">MIW</h1>
@@ -119,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             </div>
         </div>
     </div>
+
+    <!-- Main Content -->
     <div class="wrapper">
         <span class="icon-close">
             <ion-icon name="close"></ion-icon>
@@ -127,31 +59,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         <!-- Login Form -->
         <div class="form-box login">
             <h2>Login</h2>
-            <?php if ($login_error): ?>
-                <ul class="error-list">
-                    <li><?php echo htmlspecialchars($login_error); ?></li>
-                </ul>
+            <?php if (!empty($login_error)): ?>
+                <div class="error-list">
+                    <p><?php echo htmlspecialchars($login_error); ?></p>
+                </div>
             <?php endif; ?>
-            <form action="index.php" method="POST">
+            <form id="loginForm" action="index.php" method="POST">
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="mail"></ion-icon>
                     </span>
-                    <input type="email" name="login_email" value="<?php echo htmlspecialchars($login_email); ?>" required>
+                    <input 
+                        type="email" 
+                        name="login_email" 
+                        value="<?php echo htmlspecialchars($login_email); ?>" 
+                        required
+                    >
                     <label>Email</label>
                 </div>
+                <div class="error-message"></div>
+
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="lock-closed"></ion-icon>
                     </span>
-                    <input type="password" name="login_password" required>
+                    <input 
+                        type="password" 
+                        name="login_password" 
+                        required
+                    >
                     <label>Password</label>
                 </div>
+                <div class="error-message"></div>
+
                 <div class="remember-forgot">
-                    <label for="remember_me"><input type="checkbox" id="remember_me"> Remember me</label>
-                    <a href="#">Forgot Password?</a>
+                    <label>
+                        <input type="checkbox" name="remember_me"> Remember me
+                    </label>
+                    <a href="forgot-password.php">Forgot Password?</a>
                 </div>
-                <button type="submit" name="login" class="loginbutton">Login</button>
+
+                <button type="submit" name="login" class="loginbutton">
+                    <span class="button-text">Login</span>
+                    <span class="button-loader"></span>
+                </button>
+
                 <div class="login-register">
                     <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
                 </div>
@@ -161,53 +113,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         <!-- Registration Form -->
         <div class="form-box register">
             <h2>Registration</h2>
-            <?php if ($errors): ?>
-                <ul class="error-list">
-                    <?php foreach ($errors as $field => $error): ?>
-                        <li><?php echo htmlspecialchars($error); ?></li>
+            <?php if (!empty($errors)): ?>
+                <div class="error-list">
+                    <?php foreach ($errors as $error): ?>
+                        <p><?php echo htmlspecialchars($error); ?></p>
                     <?php endforeach; ?>
-                </ul>
+                </div>
             <?php endif; ?>
-            <form action="index.php" method="POST">
+            <form id="registerForm" action="index.php" method="POST">
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
                     </span>
-                    <input type="text" name="username" id="username" value="<?php echo htmlspecialchars($username); ?>" required>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        value="<?php echo htmlspecialchars($username); ?>" 
+                        required
+                        minlength="3"
+                    >
                     <label>Username</label>
                 </div>
+                <div class="error-message"></div>
+
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="mail"></ion-icon>
                     </span>
-                    <input type="email" id="email" name="email<?php echo htmlspecialchars($email); ?>" required>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        value="<?php echo htmlspecialchars($email); ?>" 
+                        required
+                    >
                     <label>Email</label>
                 </div>
+                <div class="error-message"></div>
+
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="lock-closed"></ion-icon>
                     </span>
-                    <input type="password" name="password" required>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        required
+                        minlength="8"
+                    >
                     <label>Password</label>
                 </div>
+                <div class="error-message"></div>
+
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="lock-closed"></ion-icon>
                     </span>
-                    <input type="password" name="confirm_password" required>
+                    <input 
+                        type="password" 
+                        name="confirm_password" 
+                        required
+                    >
                     <label>Confirm Password</label>
                 </div>
+                <div class="error-message"></div>
+
                 <div class="remember-forgot">
-                    <label><input type="checkbox" id="terms_agree" required> I agree to the terms & conditions</label>
+                    <label>
+                        <input type="checkbox" name="terms_agree" required> 
+                        I agree to the <a href="terms.php">terms & conditions</a>
+                    </label>
                 </div>
-                <button type="submit" name="register" class="loginbutton">Register</button>
+
+                <button type="submit" name="register" class="loginbutton">
+                    <span class="button-text">Register</span>
+                    <span class="button-loader"></span>
+                </button>
+
                 <div class="login-register">
                     <p>Already have an account? <a href="#" class="login-link">Login</a></p>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Scripts -->
     <script src="js/scripts.js"></script>
+    <script src="js/auth.js"></script>
+    
     <?php include 'temples/footer.php'; ?>
 </body>
 </html>

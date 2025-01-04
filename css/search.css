@@ -1,0 +1,59 @@
+.search-container {
+    position: relative;
+    z-index: 1000;
+    margin: 0 auto;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(26, 28, 32, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    display: none;
+    z-index: 1001;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-result {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-result:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-result img {
+    width: 45px;
+    height: 68px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.search-result .movie-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search-result .movie-title {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.search-result .movie-year {
+    color: #8b949e;
+    font-size: 12px;
+}
+
+
