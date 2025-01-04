@@ -25,6 +25,7 @@ This project showcases:
 
 
 
+
 ## 🛠️ Tech Stack  
 
 - **HTML5**: Semantic structure for a modern web.  
