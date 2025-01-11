@@ -4,7 +4,7 @@ require 'data/db_connection.php';
 session_start();
 
 // Параметры API и пагинации
-$apiKey = '';
+$apiKey = '394d146307bda71fae837829dde725e9';
 $limit = 32;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;

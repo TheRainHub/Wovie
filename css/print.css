@@ -69,10 +69,9 @@ header.scrolled {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
 }
 
-.logo {
+.logo-link {
     font-size: 2em;
     color: #fff;
-    font-family: 'Poppins', sans-serif;
     display: flex;
     align-items: center;
 }
@@ -84,8 +83,36 @@ header.scrolled {
     user-select: none;
 }
 
-.logo:hover {
-    transform: scale(1.1) rotate(-5deg);
+.second-half {
+    font-size: 0.8em;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    opacity: 0;
+    margin: 2 5px;
+}
+
+.second-half:nth-child(1) {
+    animation: fadeInWord 1s forwards 1s;
+}
+
+.second-half:nth-child(2) {
+    animation: fadeInWord 1s forwards 2s;
+}
+
+.second-half:nth-child(3) {
+    animation: fadeInWord 1s forwards 3s;
+}
+
+@keyframes fadeInLogo {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInWord {
+    to {
+        opacity: 1;
+    }
 }
 
 .search-bar {
@@ -168,4 +195,18 @@ button {
 .loginbutton-popup:hover {
     background: #61dafb;
     color: #000;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+}
+
+.logo-link .main-letter {
+    transition: transform 0.3s ease;
+}
+
+.logo-link:hover .main-letter {
+    transform: scale(1.1);
 }

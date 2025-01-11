@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($pageTitle); ?></title>
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/styles.css">
@@ -18,7 +17,8 @@
 <body>
     <div id="blur-overlay"></div>
     <header id="main-header">
-        <div class="main-letter">W<span class="highlight">ovie</span></div>
+    <a href="home.php" class="logo-link">
+        <div class="main-letter">W<span class="second-half">ovie</span></div></a>
         <div class="search-container">
             <form action="search.php" method="GET" class="search-bar" id="search-bar">
                 <input type="text" 

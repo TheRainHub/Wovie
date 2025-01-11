@@ -19,6 +19,7 @@ body {
     background-position: center bottom;
     background-attachment: fixed;
     animation: slideInBackground 3s ease-in-out forwards;
+    overflow-y: auto;
 }
 
 
@@ -122,7 +123,6 @@ body::before {
     }
 }
 
-/* Header styles */
 header {
     position: fixed;
     top: 0;
@@ -210,26 +210,42 @@ header {
     transform: translate(-50%, -50%) scale(0);
     width: 400px;
     height: 480px;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(22, 41, 56, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(6px);
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 2;
+    z-index: 99;
     overflow: hidden;
     transition: transform .5s ease, height .2s ease;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .wrapper.active-popup {
     display: flex;
     transform: translate(-50%, -50%) scale(1);
+    animation: popupFadeIn 0.3s ease;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
 .wrapper.active {
-    height: 720px;
+    height: 800px;
+    width: 500px;
 }
 
 .wrapper .form-box {
@@ -264,7 +280,7 @@ header {
     right: 0;
     width: 45px;
     height: 45px;
-    background: #162931;
+    background: #b1bbbe;
     font-size: 2em;
     color: #fff;
     display: flex;
@@ -277,9 +293,10 @@ header {
 
 .form-box h2 {
     font-size: 2.2em;
-    color: #e0cdc0;
+    color: #ffffff;
     text-align: center;
     font-family: 'Patua One', sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Input styles */
@@ -287,7 +304,7 @@ header {
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid #162938;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     margin: 30px 0;
 }
 
@@ -317,7 +334,7 @@ header {
     background: transparent;
     border: none;
     outline: none;
-    color: #e0cdc0;
+    color: #ffffff;
     font-size: 1em;
     padding: 0 5px;
     line-height: 1.2em;
@@ -363,7 +380,6 @@ header {
     background-color: #ff00005d;
 }
 
-/* Стили для состояния загрузки кнопки */
 .loginbutton.loading {
     position: relative;
     color: transparent;
@@ -389,7 +405,7 @@ header {
     }
 }
 
-/* Стили для сообщений об ошибках */
+
 .error-message {
     color: #ff3e3e;
     font-size: 12px;
@@ -406,7 +422,7 @@ header {
     position: absolute;
     right: 8px;
     font-size: 1.2em;
-    color: #162038;
+    color: #bfc4cf;
 }
 
 .error {
@@ -423,7 +439,7 @@ header {
 
 .remember-forgot {
     font-size: .9em;
-    color: #162038;
+    color: #e0cdc0;
     font-weight: 500;
     margin: -15px 0 15px;
     display: flex;
@@ -436,7 +452,7 @@ header {
 }
 
 .remember-forgot a {
-    color: #162038;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -458,14 +474,14 @@ header {
 
 .login-register {
     font-size: .9em;
-    color: #162038;
+    color: #e0cdc0;
     text-align: center;
     font-weight: 500;
     margin: 25px 0 10px;
 }
 
 .login-register p a {
-    color: #162038;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 600;
 }
@@ -487,11 +503,83 @@ input.invalid {
 
 footer {
     background-color: transparent;
-    margin-top: 100%;
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: relative;
-    bottom: auto;
+    position: fixed;
+    bottom: 0;
     width: 100%;
+    z-index: 999;
+}
+
+.avatar-upload {
+    margin: 20px 0;
+    text-align: center;
+    cursor: pointer;
+}
+.avatar-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.avatar-preview {
+    margin-bottom: 50px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e0cdc0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.button upload-text{
+    display: none;
+}
+.upload-text {
+    color: #e0cdc0;
+    font-size: 0.9em;
+    padding: 8px 20px;
+    border: 1px solid #e0cdc0;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    background: transparent;
+
+}
+.avatar-label:hover .upload-text {
+    background: rgba(224, 205, 192, 0.1);
+    transform: scale(1.05);
+}
+.avatar-label:hover .avatar-preview img {
+    transform: scale(1.1);
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 98;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
 }

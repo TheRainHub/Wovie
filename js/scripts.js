@@ -1,4 +1,3 @@
-// Preloader functionality
 document.addEventListener('DOMContentLoaded', () => {
     const preloader = document.getElementById('preloader');
     const lastWord = document.querySelector('.word:last-child');
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function hidePreloader() {
         preloader.classList.add('hide-preloader');
-
         window.removeEventListener('keydown', skipPreloader);
         window.removeEventListener('mousedown', skipPreloader);
         lastWord.removeEventListener('animationend', hidePreloader);
@@ -23,6 +21,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('keydown', skipPreloader);
     window.addEventListener('mousedown', skipPreloader);
+
+    const wrapper = document.querySelector('.wrapper');
+    const loginForm = document.querySelector('.form-box.login');
+    const registerForm = document.querySelector('.form-box.register');
+    const loginLink = document.querySelector('.login-link');
+    const registerLink = document.querySelector('.register-link');
+    const iconClose = document.querySelector('.icon-close');
+    const loginButtonPopup = document.querySelector('.loginbutton-popup');
+    
+    function initializeForms() {
+        const formState = localStorage.getItem('formState') || 'login';
+        if (formState === 'register') {
+            wrapper.classList.add('active');
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+        } else {
+            wrapper.classList.remove('active');
+            registerForm.style.display = "none";
+            loginForm.style.display = "block";
+        }
+    }
+
+    // Form toggle handlers
+    registerLink?.addEventListener('click', (e) => {
+        e.preventDefault();
+        wrapper.classList.add('active');
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+        localStorage.setItem('formState', 'register');
+    });
+
+    loginLink?.addEventListener('click', (e) => {
+        e.preventDefault();
+        wrapper.classList.remove('active');
+        registerForm.style.display = "none";
+        loginForm.style.display = "block";
+        localStorage.setItem('formState', 'login');
+    });
+
+    // Form popup handlers
+    loginButtonPopup?.addEventListener('click', () => {
+        wrapper.style.display = 'flex';
+        wrapper.classList.add('active-popup');
+        initializeForms();
+    });
+
+    iconClose?.addEventListener('click', () => {
+        wrapper.classList.remove('active-popup');
+        setTimeout(() => {
+            wrapper.style.display = 'none';
+            wrapper.classList.remove('active');
+            resetForms();
+        }, 300);
+    });
+
+    // Initialize forms on load
+    initializeForms();
 });
 
 window.addEventListener('load', () => {
@@ -51,10 +106,7 @@ window.addEventListener('load', () => {
     }
 });
 
-
-// Login and Register form toggle
 document.addEventListener('DOMContentLoaded', function() {
-    // Получаем все необходимые элементы
     const wrapper = document.querySelector('.wrapper');
     const loginLink = document.querySelector('.login-link');
     const registerLink = document.querySelector('.register-link');
@@ -63,11 +115,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerForm = document.querySelector('.form-box.register');
     const loginButtonPopup = document.querySelector('.loginbutton-popup');
     
-
     loginForm.style.display = "block";
     registerForm.style.display = "none";
     wrapper.classList.remove('active');
-
 
     if (localStorage.getItem('formClosed') === 'true') {
         const lastForm = localStorage.getItem('formState');
@@ -77,12 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
             registerForm.style.display = "block";
         }
     }
-    // Функция сброса форм
+
     function resetForms() {
         document.querySelectorAll('input').forEach(input => {
             if (input.type !== 'submit' && input.type !== 'button') {
                 input.value = '';
-                // Сбрасываем состояние label
                 const label = input.nextElementSibling;
                 if (label) {
                     label.classList.remove('active');
@@ -110,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('formState', 'register');
     });
     
-    // В обработчике loginLink
     loginLink?.addEventListener('click', () => {
         wrapper.classList.remove('active');
         registerForm.style.display = "none";
@@ -118,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('formState', 'login');
     });
     
-    // В начале DOMContentLoaded добавьте:
     const formState = localStorage.getItem('formState');
     if (formState === 'register') {
         wrapper.classList.add('active');
@@ -130,60 +177,59 @@ document.addEventListener('DOMContentLoaded', function() {
         loginForm.style.display = "block";
     }
 
-    // Открытие popup
     loginButtonPopup?.addEventListener('click', () => {
         wrapper.style.display = 'flex';
-        // Небольшая задержка перед добавлением класса для анимации
         setTimeout(() => {
             wrapper.classList.add('active-popup');
         }, 10);
     });
 
-    // Добавим переменную для отслеживания первого посещения
     let isFirstVisit = !localStorage.getItem('hasVisited');
 
-    // В обработчике DOMContentLoaded:
     if (isFirstVisit) {
-    // При первом визите показываем логин форму
-    wrapper.classList.remove('active');
-    registerForm.style.display = "none";
-    loginForm.style.display = "block";
-    localStorage.setItem('hasVisited', 'true');
-    } else {
-    // Для последующих визитов проверяем последнее состояние
-    const formState = localStorage.getItem('formState');
-    if (formState === 'register') {
-        wrapper.classList.add('active');
-        loginForm.style.display = "none";
-        registerForm.style.display = "block";
-    } else {
         wrapper.classList.remove('active');
         registerForm.style.display = "none";
         loginForm.style.display = "block";
+        localStorage.setItem('hasVisited', 'true');
+    } else {
+        const formState = localStorage.getItem('formState');
+        if (formState === 'register') {
+            wrapper.classList.add('active');
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+        } else {
+            wrapper.classList.remove('active');
+            registerForm.style.display = "none";
+            loginForm.style.display = "block";
+        }
     }
-}
 
-
-    // Закрытие формы
     iconClose?.addEventListener('click', () => {
-        localStorage.setItem('formState', wrapper.classList.contains('active') ? 'register' : 'login');
-        localStorage.setItem('formClosed', 'true');
-        // Сначала убираем active и active-popup
+        const currentForm = wrapper.classList.contains('active') ? 'register' : 'login';
+        localStorage.setItem('lastForm', currentForm);
         wrapper.classList.remove('active');
         wrapper.classList.remove('active-popup');
         
-        // Сброс стилей форм
         loginForm.style.display = "block";
         registerForm.style.display = "none";
         
-        // Задержка перед скрытием wrapper
         setTimeout(() => {
             wrapper.style.display = 'none';
             resetForms();
         }, 300);
     });
 
-    // Обработка input полей
+    loginButtonPopup?.addEventListener('click', () => {
+        const lastForm = localStorage.getItem('lastForm');
+        if (lastForm === 'register') {
+            wrapper.classList.add('active');
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+        }
+        wrapper.style.display = 'flex';
+        wrapper.classList.add('active-popup');
+    });
+
     document.querySelectorAll('.input-box input').forEach(input => {
         input.addEventListener('input', () => {
             if (input.value.trim() !== "") {
@@ -194,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Preloader functionality
     const preloader = document.getElementById('preloader');
     if (preloader) {
         const preloaderDisabled = localStorage.getItem('preloaderDisabled');
@@ -213,11 +258,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Disable preloader button
     const disablePreloaderButton = document.getElementById('disable-preloader');
     disablePreloaderButton?.addEventListener('click', () => {
         localStorage.setItem('preloaderDisabled', 'true');
     });
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    document.body.appendChild(overlay);
+
+    loginButtonPopup?.addEventListener('click', () => {
+        wrapper.style.display = 'flex';
+        wrapper.classList.add('active-popup');
+        overlay.classList.add('active');
+    });
+
+    iconClose?.addEventListener('click', () => {
+        wrapper.classList.remove('active-popup');
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            wrapper.style.display = 'none';
+            resetForms();
+        }, 300);
+    });
+
+    overlay.addEventListener('click', () => {
+        iconClose.click();
+    });
 });
 
+document.querySelectorAll('[data-requires-auth]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('.wrapper').style.display = 'flex';
+        document.querySelector('.wrapper').classList.add('active-popup');
+    });
+});
 

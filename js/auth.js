@@ -271,4 +271,91 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Enhanced form validation
+    function validateForm(formData, formType) {
+        const errors = {};
+        
+        if (formType === 'register') {
+            if (!formData.username?.trim()) {
+                errors.username = 'Username is required';
+            } else if (formData.username.length < 3) {
+                errors.username = 'Username must be at least 3 characters';
+            }
+            
+            if (!formData.confirm_password) {
+                errors.confirm_password = 'Please confirm your password';
+            } else if (formData.password !== formData.confirm_password) {
+                errors.confirm_password = 'Passwords do not match';
+            }
+        }
+        
+        if (!formData.email?.trim()) {
+            errors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            errors.email = 'Please enter a valid email address';
+        }
+        
+        if (!formData.password) {
+            errors.password = 'Password is required';
+        } else if (formData.password.length < 8) {
+            errors.password = 'Password must be at least 8 characters';
+        }
+        
+        return errors;
+    }
+
+    // Update form submission handlers to use the new validation
+    // ...existing form submission code...
+
+    // Replace the existing avatar handling code with this:
+    const initializeAvatarUpload = () => {
+        const avatarInput = document.getElementById('avatar');
+        const avatarPreview = document.getElementById('avatar-preview-img');
+        const avatarError = document.getElementById('avatar-error');
+        const avatarLabel = document.querySelector('.avatar-label');
+
+        if (avatarInput && avatarPreview && avatarLabel) {
+            // Ensure the label is clickable
+            avatarLabel.addEventListener('click', (e) => {
+                e.preventDefault();
+                avatarInput.click();
+            });
+
+            avatarPreview.addEventListener('click', (e) => {
+                e.preventDefault();
+                avatarInput.click();
+            });
+
+            avatarInput.addEventListener('change', function(e) {
+                const file = this.files[0];
+                if (!file) return;
+
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+                if (file.size > maxSize) {
+                    if (avatarError) avatarError.textContent = 'File size must be less than 5MB';
+                    this.value = '';
+                    return;
+                }
+
+                if (!allowedTypes.includes(file.type)) {
+                    if (avatarError) avatarError.textContent = 'Please select a valid image file (JPG, PNG, GIF)';
+                    this.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarPreview.src = e.target.result;
+                    if (avatarError) avatarError.textContent = '';
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    };
+
+    // Add this line after your existing DOMContentLoaded event listener code
+    initializeAvatarUpload();
 });

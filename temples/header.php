@@ -21,17 +21,22 @@
             <span class="second-half">ovie</span>
         </h1>
         <nav class="navigation">   
-        <a href="#">Home</a>
-        <a href="#">Articles</a>
-        <a href="#">Top Rated</a>
-        <a href="#">Discussions</a>
             <?php if (isset($_SESSION['user_id'])): ?>
-                <!-- User is logged in -->
+                <a href="home.php">Home</a>
+                <a href="articles.php">Articles</a>
+                <a href="top_rated.php">Top Rated</a>
+                <a href="discussions.php">Discussions</a>
                 <a href="user_profile.php">Profile</a>
                 <a href="logout.php">Logout</a>
             <?php else: ?>
-                <!-- User is not logged in -->
+                <a href="#" class="nav-link" data-requires-auth>Home</a>
+                <a href="#" class="nav-link" data-requires-auth>Articles</a>
+                <a href="#" class="nav-link" data-requires-auth>Top Rated</a>
+                <a href="#" class="nav-link" data-requires-auth>Discussions</a>
                 <button class="loginbutton-popup">Login</button>
             <?php endif; ?>
         </nav>
     </header>
+    <script src="js/scripts.js" defer></script>
+</body>
+</html>

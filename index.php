@@ -1,7 +1,10 @@
 <?php
 session_start();
 
-// Initialize all variables
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// Initialize variables
 $pageTitle = 'Wovie';
 $backgroundImage = 'photos/starwarsbackG.jpg';
 $errors = [];
@@ -14,13 +17,135 @@ $login_password = '';
 $login_error = '';
 
 // Include required files
-include 'temples/header.php';
 require 'data/db_connection.php';
+include 'temples/header.php';
 
-// Check if user is already logged in
-if (isset($_SESSION['user_id'])) {
-    header('Location: home.php');
-    exit();
+
+// Функция для обработки загрузки аватара
+function processAvatar($file) {
+    // Проверяем, был ли файл загружен
+    if (!isset($file) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return 'uploads/avatars/default-avatar.jpg';
+    }
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        throw new Exception('Ошибка при загрузке файла: ' . $file['error']);
+    }
+
+    // Определяем абсолютный путь к директории загрузки
+    $uploadDir = __DIR__ . '/uploads/avatars/';
+    
+    // Проверяем и создаем директорию
+    if (!file_exists($uploadDir)) {
+        if (!mkdir($uploadDir, 0777, true)) {
+            throw new Exception('Не удалось создать директорию для загрузки');
+        }
+    }
+
+    // Проверяем права доступа
+    if (!is_writable($uploadDir)) {
+        chmod($uploadDir, 0777);
+        if (!is_writable($uploadDir)) {
+            throw new Exception('Директория загрузки недоступна для записи');
+        }
+    }
+
+    // Проверяем размер файла (5MB максимум)
+    if ($file['size'] > 5 * 1024 * 1024) {
+        throw new Exception('Размер файла превышает 5MB');
+    }
+
+    // Проверяем тип файла
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+
+    if (!in_array($mimeType, $allowedTypes)) {
+        throw new Exception('Недопустимый тип файла. Разрешены только JPG, PNG и GIF');
+    }
+
+    // Генерируем уникальное имя файла
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $fileName = uniqid('avatar_', true) . '.' . $extension;
+    $targetPath = $uploadDir . $fileName;
+
+    // Перемещаем загруженный файл
+    if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+        throw new Exception('Не удалось сохранить файл');
+    }
+
+    return 'uploads/avatars/' . $fileName;
+}
+
+// Обработка отправки формы регистрации
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+    try {
+        // Валидация входных данных
+        $username = trim($_POST['username'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+        $confirm_password = trim($_POST['confirm_password'] ?? '');
+
+        // Проверка обязательных полей
+        if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
+            throw new Exception('Все поля обязательны для заполнения');
+        }
+
+        // Проверка совпадения паролей
+        if ($password !== $confirm_password) {
+            throw new Exception('Пароли не совпадают');
+        }
+
+        // Обработка аватара
+        try {
+            $avatar_path = processAvatar($_FILES['avatar'] ?? null);
+        } catch (Exception $e) {
+            $errors[] = "Ошибка загрузки аватара: " . $e->getMessage();
+            $avatar_path = 'uploads/avatars/default-avatar.jpg';
+        }
+
+        // Если нет ошибок, сохраняем в базу
+        if (empty($errors)) {
+            $pdo->beginTransaction();
+
+            try {
+                // Проверка существующего email
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+                $stmt->execute([$email]);
+                if ($stmt->fetch()) {
+                    throw new Exception("Этот email уже зарегистрирован");
+                }
+
+                // Добавление пользователя
+                $sql = "INSERT INTO users (username, email, password, avatar_path, created_at) 
+                        VALUES (:username, :email, :password, :avatar_path, NOW())";
+                $stmt = $pdo->prepare($sql);
+
+                $result = $stmt->execute([
+                    ':username' => $username,
+                    ':email' => $email,
+                    ':password' => password_hash($password, PASSWORD_DEFAULT),
+                    ':avatar_path' => $avatar_path
+                ]);
+
+                if (!$result) {
+                    throw new Exception("Ошибка при сохранении данных");
+                }
+
+                $pdo->commit();
+                $_SESSION['success'] = "Регистрация успешно завершена!";
+                header('Location: login.php');
+                exit;
+
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                $errors[] = $e->getMessage();
+            }
+        }
+    } catch (Exception $e) {
+        $errors[] = $e->getMessage();
+    }
 }
 ?>
 
@@ -120,7 +245,21 @@ if (isset($_SESSION['user_id'])) {
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-            <form id="registerForm" action="index.php" method="POST">
+            <form id="registerForm" action="index.php" method="POST" enctype="multipart/form-data">
+
+            <div class="input-box avatar-upload">
+                    <input type="file"
+                        id="avatar"
+                        name="avatar"
+                        accept="image/*"
+                        >
+                    <label for="avatar" class="avatar-label">
+                        <div class="avatar-preview">
+                            <img id="avatar-preview-img" src="photos/uploads/avatars/default-avatar.jpg" alt="Avatar preview">
+                        </div>
+                    </label>
+                    <div id="avatar-error"></div>
+                </div>
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
@@ -176,6 +315,7 @@ if (isset($_SESSION['user_id'])) {
                     <label>Confirm Password</label>
                 </div>
                 <div class="error-message"></div>
+
 
                 <div class="remember-forgot">
                     <label>

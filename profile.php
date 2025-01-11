@@ -1,35 +1,29 @@
 <?php
-// profile.php
-
-include 'includes/header.php';
-include 'includes/db_connect.php';
-
-// Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
+function checkAchievements($userId, $pdo) {
+    // Считаем количество фильмов в избранном
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM favorites WHERE user_id = ?");
+    $stmt->execute([$userId]);
+    $favCount = $stmt->fetchColumn();
+    
+    // Считаем комментарии
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM comments WHERE user_id = ?");
+    $stmt->execute([$userId]);
+    $commCount = $stmt->fetchColumn();
+    
+    // Массив с достижениями
+    $achievements = [];
+    
+    // Проверяем условия
+    if ($favCount >= 1) $achievements[] = 1; // ID достижения "Первый фаворит"
+    if ($favCount >= 10) $achievements[] = 2; // ID "Коллекционер"
+    if ($commCount >= 1) $achievements[] = 3; // ID "Первый комментарий"
+    if ($commCount >= 10) $achievements[] = 4; // ID "Активный критик"
+    
+    // Добавляем достижения, которых еще нет
+    foreach ($achievements as $achievementId) {
+        $stmt = $pdo->prepare("INSERT IGNORE INTO user_achievements (user_id, achievement_id, date_earned) 
+                            VALUES (?, ?, NOW())");
+        $stmt->execute([$userId, $achievementId]);
+    }
 }
-
-// Retrieve user information
-$stmt = $pdo->prepare('SELECT * FROM users WHERE id = :id');
-$stmt->execute(['id' => $_SESSION['user_id']]);
-$user = $stmt->fetch();
-
-if (!$user) {
-    // User not found, log out
-    session_unset();
-    session_destroy();
-    header('Location: login.php');
-    exit();
-}
-
-$pageTitle = 'Profile - ' . htmlspecialchars($user['username']);
 ?>
-
-<div class="content">
-    <h2>Welcome, <?php echo htmlspecialchars($user['username']); ?>!</h2>
-    <p>Email: <?php echo htmlspecialchars($user['email']); ?></p>
-    <!-- Add more profile details here -->
-</div>
-
-<?php include 'includes/footer.php'; ?>
