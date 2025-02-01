@@ -20,8 +20,15 @@ This project showcases:
 3. A commitment to simplicity and performance.  
 
 ## 🎨 Screenshots  
-![image](https://github.com/user-attachments/assets/2034ca5a-0c03-476a-a1b3-653612998fdc)
+![WOVIE1](https://github.com/user-attachments/assets/67abd389-e62b-4292-9681-c3e29b0984b6)
+![WOVIElogin](https://github.com/user-attachments/assets/8c50a555-e9bf-479a-b90a-0a9da5d9b108)
+![woviemain](https://github.com/user-attachments/assets/52cb3607-674c-4e25-a28b-aa852e05dfd1)
+![wivoefilm](https://github.com/user-attachments/assets/42e1433c-2900-48b2-b920-e7ba980c7133)
 
+![woviesearch](https://github.com/user-attachments/assets/8d98829e-2bec-4066-908c-e44e12580119)
+![woviecast](https://github.com/user-attachments/assets/f8c17ac6-301d-4ed6-967d-358efbb55afd)
+
+![wovieuserplofile](https://github.com/user-attachments/assets/630bd594-8f24-4ec1-8b7d-5c48280fa737)
 
 
 
