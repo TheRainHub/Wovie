@@ -1,6 +1,6 @@
 # MIW - Wovie🚀  
 
-Welcome to the **Wovie** project! This is a minimalistic and modern web page created using only **pure HTML, CSS, JavaScript, and PHP** - no frameworks, libraries, or external tools involved.
+Welcome to the **Wovie** project! This is a minimalistic and modern web page created using only **pure HTML, CSS, JavaScript, and PHP** - no frameworks, libraries, or external tools involved.(but planning to re-write it to modern stack in future)
 YouTube Link - https://youtu.be/9xlyTT7LSGk
 ## 🌟 Features  
 
